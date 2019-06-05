@@ -19,3 +19,16 @@ Actual Behavior: All params are removed and the function returns no query string
                  parameters
 To fix: If the optional array contains any values not found in the list of
         query string parameters then nothing should be removed
+
+
+
+Feature: Convert non -".gov" domain suffix to ".gov"
+Failing Test case: validate_url('en.wikipedia.org')
+Expected Behavior: Expected function to return 'en.wikipedia.gov'
+Actual Behavior: Returned 'en.gov'
+To fix: Changing the domain suffix needs to take into account multiple '.'
+        separated values could exist before the actual suffix
+
+
+Other possible bugs that might be out of scope: validate_url() does not accept
+        'http://' in the url but this could be by design

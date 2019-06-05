@@ -86,9 +86,9 @@ def test_remove_non_existant_params():
     ("www.austintexas.foo", "www.austintexas.gov"),
     ("www.foo.barbar", "www.foo.gov"),
     ("www.foo.gov", "www.foo.gov"),
-    ("www.foo.bar.bar", "www.foo.gov"),
     ("www.foo.bar/", "www.foo.gov"),
-    ("www.foo.bar/?a=1&b=2&c=3", "www.foo.gov?a=1&b=2&c=3")
+    ("www.foo.bar/?a=1&b=2&c=3", "www.foo.gov?a=1&b=2&c=3"),
+    ("en.wikipedia.org", "en.wikipedia.gov")
 ])
 def test_convert_domain_suffix(url, expected):
     assert validate_url(url) == expected
