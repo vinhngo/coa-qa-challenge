@@ -25,16 +25,11 @@ def extract_params(url):
     return param_dict
 
 
-"""
-    Test input url match happy path, some commented out cases that don't pass
-    but wasn't sure if in scope
-"""
-
-
+# Just thinking through some other cases...
 @pytest.mark.parametrize("url, expected", [
     ("www.austintexas.gov", "www.austintexas.gov"),
     # ("http://www.austintexas.gov", "http://www.austintexas.gov"),
-    # ("www.austintexas.gov/help/stuff", "www.austintexas.gov"),
+    # ("www.austintexas.com/help/stuff", "www.austintexas.gov/help/stuff"),
     # (None, None)
 ])
 def test_basic_url_match(url, expected):
@@ -45,6 +40,7 @@ def test_basic_url_match(url, expected):
 @pytest.mark.parametrize("url", [
     ('www.austintexas.gov?a=1&b=2&foo=bar&3=5&4=cats'),
     ('www.austintexas.gov?a=1&b=2&a=2&a=3'),
+    ('www.austintexas.gov?a=1&b=2&a=2&a=3&b=4&c=5&d=6&d=7'),
 ])
 def test_remove_dupes(url):
     params = extract_params(url)

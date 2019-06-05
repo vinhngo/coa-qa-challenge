@@ -1,0 +1,21 @@
+validate_url.py bug report
+
+Feature: Duplicate parameter removal
+Failing Test case: validate_url('www.austintexas.gov?a=1&b=2&a=2&a=3')
+Expected Behavior: In the case of params "a=1&b=2&a=2&a=3" we expect the
+                   function to return "a=1&b=2" (retain the first dupe found)
+Actual Behavior: For the above case we are returned "a=3&b=2", indicating that
+                 the last duplicate parameter (a=3) was retained.
+To fix: For any number of duplicate parameters found retain the first dupe
+        param found
+
+
+
+Feature: Remove query string parameters specified within optional array
+Failing Test case: validate_url('www.austintexas.gov?a=1&b=2&foo=bar&3=5&4=cats', ['cookie'])
+Expected Behavior: Since the param 'cookie' does not exist we expect to the
+                   function to return the same url passed to validate_url()
+Actual Behavior: All params are removed and the function returns no query string
+                 parameters
+To fix: If the optional array contains any values not found in the list of
+        query string parameters then nothing should be removed
