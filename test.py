@@ -17,8 +17,7 @@ def extract_params(url):
     parsed_params = parse.parse_qsl(parse.urlsplit(url).query)
     param_dict = {}
     for p in parsed_params:
-        existing_value = param_dict.get(p[0], None)
-        if existing_value:
+        if p[0] in param_dict:
             pass
         else:
             param_dict[p[0]] = p[1]
