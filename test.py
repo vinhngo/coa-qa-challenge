@@ -14,7 +14,15 @@ def test_identity():
 
 # Python dictionary cannot have dupe keys so this is a good way to kill dupes
 def extract_params(url):
-    return dict(parse.parse_qsl(parse.urlsplit(url).query))
+    parsed_params = parse.parse_qsl(parse.urlsplit(url).query)
+    param_dict = {}
+    for p in parsed_params:
+        existing_value = param_dict.get(p[0], None)
+        if existing_value:
+            pass
+        else:
+            param_dict[p[0]] = p[1]
+    return param_dict
 
 
 """
@@ -33,28 +41,18 @@ def test_basic_url_match(url, expected):
     assert validate_url(url) == expected
 
 
-# Test that unique parameters persist
-def test_unique_params_persistence():
-    url = 'www.austintexas.gov?a=1&b=2&foo=bar&3=5&4=cats'
-    params = extract_params(url)
-    validated_url = validate_url(url)
-    for p in params:
-        assert (str(p) + "=" + str(params[p])) in validated_url
-
-
-"""
-    Test remove dupe parameters, note that I do not care which parameters are
-    removed. If it is important to keep the first dupe parameter then this test
-    can be rewritten to accommodate
-"""
-
-
-def test_remove_dupe_params():
-    url = 'www.austintexas.gov?a=1&b=2&a=2&a=3'
+# Test that unique parameters persist, test that dupe removal keeps first dupe
+@pytest.mark.parametrize("url", [
+    ('www.austintexas.gov?a=1&b=2&foo=bar&3=5&4=cats'),
+    ('www.austintexas.gov?a=1&b=2&a=2&a=3'),
+])
+def test_remove_dupes(url):
     params = extract_params(url)
     validated_url = validate_url(url)
     validated_params = extract_params(validated_url)
     assert len(params) == len(validated_params)
+    for p in params:
+        assert (str(p) + "=" + str(params[p])) in validated_url
 
 
 # Test remove string parameters, include multiple params and empty params
